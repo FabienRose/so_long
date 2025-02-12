@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 13:07:13 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/10 13:22:29 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/12 10:27:09 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/12 10:51:43 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,8 @@ char	*clean_line(char *line)
 char	**load_map(const char *filename)
 {
 	int		fd;
-	int		rows;
 	int		line_count;
 	char	**map;
-	char	*line;
 
 	line_count = count_lines(filename);
 	if (line_count <= 0)
@@ -75,14 +73,7 @@ char	**load_map(const char *filename)
 	map = malloc(sizeof(char *) * (line_count + 1));
 	if (!map)
 		return (NULL);
-	rows = 0;
-	line = get_next_line(fd);
-	while (line)
-	{
-		map[rows++] = clean_line(line);
-		line = get_next_line(fd);
-	}
-	map[rows] = NULL;
+	fill_map(fd, map);
 	close(fd);
 	return (map);
 }

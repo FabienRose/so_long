@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_tiles.c                                        :+:      :+:    :+:   */
+/*   key_binds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 13:57:08 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/12 13:58:21 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/12 22:21:19 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/12 22:35:36 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "so_long.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int	count_collectibles(char **map)
 {
-	size_t	total;
-	void	*ptr;
+	int	count;
+	int	x;
+	int	y;
 
-	if (nmemb == 0 || size == 0)
+	count = 0;
+	y = 0;
+	while (map[y])
 	{
-		ptr = malloc(0);
-		if (!ptr)
-			return (NULL);
-		return (ptr);
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'C')
+				count++;
+			x++;
+		}
+		y++;
 	}
-	total = nmemb * size;
-	ptr = malloc(total);
-	if (ptr == NULL)
-		return (NULL);
-	ft_bzero(ptr, total);
-	return (ptr);
+	return (count);
 }

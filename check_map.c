@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 12:44:42 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/10 12:44:49 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/12 19:59:03 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/12 19:59:03 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,39 +60,23 @@ int	validate_map_content(char **map, t_map_info *info)
 	return (TRUE);
 }
 
-int	valid_path(char **map)
+int	valid_path(char **map, t_map_info info)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	char	**temp_map;
 
-	x = 0;
-	while (map[x])
+	temp_map = duplicate_map(map, info.rows);
+	if (!temp_map)
+		return (FALSE);
+	find_player_position(temp_map, &x, &y);
+	flood_fill(temp_map, x, y);
+	if (!check_remaining_elements(temp_map))
 	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == 'P')
-				break ;
-			y++;
-		}
-		if (map[x][y] == 'P')
-			break ;
-		x++;
+		free_map(temp_map);
+		return (FALSE);
 	}
-	flood_fill(map, x, y);
-	x = 0;
-	y = 0;
-	while (map[x])
-	{
-		y = 0;
-		while (map[x][y])
-		{
-			if (map[x][y] == 'E' || map[x][y] == 'C')
-				return (FALSE);
-			y++;
-		}
-		x++;
-	}
+	free_map(temp_map);
 	return (TRUE);
 }
 
@@ -110,5 +94,5 @@ int	is_map_valid(char **map)
 	if (!validate_map_content(map, &info))
 		return (FALSE);
 	return (info.player == 1
-		&& info.exit >= 1 && info.collectibles >= 1 && valid_path(map));
+		&& info.exit == 1 && info.collectibles >= 1 && valid_path(map, info));
 }

@@ -3,7 +3,7 @@ NAME = so_long
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = main.c map.c check_map.c
+SRC = main.c map.c check_map.c check_map_utils.c set_tiles.c key_binds.c key_binds_utils.c cleanup.c
 OBJ_DIR = objects
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 LIBFT = libft/libft.a

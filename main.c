@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   workspace.json                                     :+:      :+:    :+:   */
+/*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 14:16:37 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/10 14:16:37 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/12 23:32:42 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/12 23:32:42 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,51 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	cleanup(t_mlx *mlx_data)
+void	set_window_size(t_mlx *game)
 {
-	if (mlx_data->window)
-		mlx_destroy_window(mlx_data->mlx, mlx_data->window);
-	if (mlx_data->mlx)
-	{
-		mlx_destroy_display(mlx_data->mlx);
-		free(mlx_data->mlx);
-	}
+	int	rows;
+	int	cols;
+
+	rows = 0;
+	while (game->map[rows])
+		rows++;
+	cols = ft_strlen(game->map[0]);
+	game->width = 60 * cols;
+	game->height = 60 * rows;
 }
 
-int	handle_keypress(int keycode, t_mlx *mlx_data)
+int	map_init(char *map_name, t_mlx *game)
 {
-	if (keycode == 65307)
+	if (!map_name || !ft_strstr(map_name, ".ber"))
 	{
-		cleanup(mlx_data);
-		exit(0);
+		ft_printf("Need a .ber map file.\n");
+		return (TRUE);
+	}
+	game->map = load_map(map_name);
+	if (!is_map_valid(game->map))
+	{
+		ft_printf("Map is not conform.\n");
+		cleanup(game);
+		return (TRUE);
 	}
 	return (FALSE);
 }
 
 int	main(int ac, char **argv)
 {
-	t_mlx	mlx_data;
-	char	**map;
+	t_mlx	game;
 
 	(void)ac;
-	(void)map;
-	if (!argv[1] || !ft_strstr(argv[1], ".ber"))
-	{
-		ft_printf("Need a .ber map file.\n");
-		return (0);
-	}
-	map = load_map(argv[1]);
-	ft_printf("Is Map Valid? : %d\n", is_map_valid(map));
-	mlx_data.mlx = mlx_init();
-	if (!mlx_data.mlx)
+	ft_bzero(&game, sizeof(game));
+	if (map_init(argv[1], &game))
 		return (TRUE);
-	mlx_data.window = mlx_new_window(mlx_data.mlx, 800, 600, "Hello world!");
-	mlx_hook(mlx_data.window, 2, 1L << 0, handle_keypress, &mlx_data);
-	mlx_loop(mlx_data.mlx);
-	//remember to FREE THE MAP
+	game.mlx = mlx_init();
+	if (!game.mlx)
+		return (TRUE);
+	set_window_size(&game);
+	game.window = mlx_new_window(game.mlx, game.width, game.height, "Hello world!");
+	set_tiles(&game);
+	key_binds(&game);
+	mlx_loop(game.mlx);
 	return (0);
 }
