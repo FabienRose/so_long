@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 23:33:12 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/12 23:33:46 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/13 14:18:15 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/13 14:18:15 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_mlx
 	int		collectible_count;
 }	t_mlx;
 
-
 typedef struct s_map_info
 {
 	int	rows;
@@ -89,6 +88,5 @@ void	key_binds(t_mlx *game);
 int		count_collectibles(char **map);
 
 void	cleanup(t_mlx *game);
-
 
 #endif

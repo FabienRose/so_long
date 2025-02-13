@@ -5,19 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 23:01:18 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/12 23:01:46 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/13 14:08:18 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/13 14:15:39 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+void	new_player_position(t_mlx *game, int new_x, int new_y)
+{
+	game->map[game->player_y][game->player_x] = '0';
+	game->player_x = new_x;
+	game->player_y = new_y;
+	game->map[new_y][new_x] = 'P';
+}
 
 int	move_player(t_mlx *game, int new_x, int new_y)
 {
 	static int	moves = 0;
 
-	game->collectible_count = count_collectibles(game->map);
 	if (game->map[new_y][new_x] == '1')
 		return (FALSE);
 	if (game->map[new_y][new_x] == 'C')
@@ -36,10 +42,7 @@ int	move_player(t_mlx *game, int new_x, int new_y)
 		ft_printf("Collect all collectibles before exiting!\n");
 		return (FALSE);
 	}
-	game->map[game->player_y][game->player_x] = '0';
-	game->player_x = new_x;
-	game->player_y = new_y;
-	game->map[new_y][new_x] = 'P';
+	new_player_position(game, new_x, new_y);
 	moves++;
 	ft_printf("Moves: %d\n", moves);
 	render_map(game);
@@ -71,7 +74,14 @@ int	handle_keypress(int keycode, t_mlx *game)
 	return (FALSE);
 }
 
+int	cross_click(t_mlx *game)
+{
+	cleanup(game);
+	exit(0);
+}
+
 void	key_binds(t_mlx *game)
 {
 	mlx_hook(game->window, 2, 1L << 0, &handle_keypress, game);
+	mlx_hook(game->window, 17, 0, &cross_click, game);
 }

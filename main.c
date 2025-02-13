@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmixtur <fmixtur@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 23:32:42 by fmixtur           #+#    #+#             */
-/*   Updated: 2025/02/12 23:32:42 by fmixtur          ###   ########.ch       */
+/*   Created: 2025/02/13 13:57:54 by fmixtur           #+#    #+#             */
+/*   Updated: 2025/02/13 14:06:29 by fmixtur          ###   ########.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	main(int ac, char **argv)
 	if (!game.mlx)
 		return (TRUE);
 	set_window_size(&game);
-	game.window = mlx_new_window(game.mlx, game.width, game.height, "Hello world!");
+	game.window = mlx_new_window(game.mlx, game.width,
+			game.height, "Ninja Shuriken");
+	game.collectible_count = count_collectibles(game.map);
 	set_tiles(&game);
 	key_binds(&game);
 	mlx_loop(game.mlx);

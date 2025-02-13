@@ -1,1 +1,0 @@
-fmixtur@DESKTOP-5RGRT1I:~/42/so_long$ export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
